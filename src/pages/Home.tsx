@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Settings, Scroll, User, Trophy, Zap, Brain, Edit, X, Users, BarChart } from "lucide-react"
+import { Settings, Scroll, User, Trophy, Zap, Brain, Edit, X, Users, BarChart, Menu, MessageSquare, Briefcase } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,6 +13,12 @@ import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { QuestBoard } from "@/components/quest/QuestBoard"
 import { UserList } from "@/components/profile/UserList"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("quests")
@@ -48,10 +54,36 @@ export default function Home() {
       <NodeAnimation />
       <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md flex justify-between items-center">
         <h1 className="text-2xl font-bold font-serif">AIギルド</h1>
-        <Button variant="ghost" size="icon">
-          <Settings className="h-6 w-6" />
-          <span className="sr-only">設定</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">メニュー</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 bg-[#2A0374] border-[#4A0E82] text-white">
+            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+              <Scroll className="mr-2 h-4 w-4" />
+              <span>クエスト</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+              <User className="mr-2 h-4 w-4" />
+              <span>プロフィール</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+              <Briefcase className="mr-2 h-4 w-4" />
+              <span>引き受けた仕事</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+              <Users className="mr-2 h-4 w-4" />
+              <span>パーティーの依頼</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+              <MessageSquare className="mr-2 h-4 w-4" />
+              <span>メッセージ</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
 
       <ScrollArea className="flex-grow">
