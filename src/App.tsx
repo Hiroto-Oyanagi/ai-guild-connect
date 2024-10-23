@@ -10,6 +10,7 @@ import PartySearch from "./pages/PartySearch"
 import AcceptedJobs from "./pages/AcceptedJobs"
 import PartyRequests from "./pages/PartyRequests"
 import Messages from "./pages/Messages"
+import CompanyDashboard from "./pages/CompanyDashboard"
 
 const queryClient = new QueryClient()
 
@@ -24,6 +25,17 @@ const ProgrammerRoute = ({ children }) => {
   return children;
 };
 
+// 企業ユーザーのみアクセスを許可するガード
+const CompanyRoute = ({ children }) => {
+  const userType = localStorage.getItem("userType");
+  
+  if (userType !== "company") {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -32,6 +44,14 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/company-dashboard"
+            element={
+              <CompanyRoute>
+                <CompanyDashboard />
+              </CompanyRoute>
+            }
+          />
           <Route
             path="/home"
             element={
