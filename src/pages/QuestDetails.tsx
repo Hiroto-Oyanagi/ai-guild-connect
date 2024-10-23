@@ -41,10 +41,7 @@ export default function QuestDetails() {
 
   const handlePartySearch = (questId: number) => {
     setSearchingParty(prev => [...prev, questId])
-    toast({
-      title: "パーティー募集開始",
-      description: "パーティーメンバーの募集を開始しました",
-    })
+    navigate(`/party-search/${questId}`)
   }
 
   return (
@@ -83,14 +80,11 @@ export default function QuestDetails() {
                         </Button>
                         <Button 
                           onClick={() => handlePartySearch(quest.id)}
-                          disabled={searchingParty.includes(quest.id)}
                           variant="outline"
-                          className={`border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white ${
-                            searchingParty.includes(quest.id) ? 'opacity-50 cursor-not-allowed' : ''
-                          }`}
+                          className="border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
                         >
                           <Users className="mr-2 h-4 w-4" />
-                          {searchingParty.includes(quest.id) ? 'パーティー募集中' : 'パーティーを探す'}
+                          パーティーを探す
                         </Button>
                       </div>
                     </div>
