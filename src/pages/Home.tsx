@@ -5,92 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Scroll, Settings, User, Trophy, Zap, Brain, Edit, X, Users, BarChart } from "lucide-react"
+import { Settings, Scroll, User, Trophy, Zap, Brain, Edit, X, Users, BarChart } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
-
-function NodeAnimation() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-
-    const nodes: { x: number; y: number; vx: number; vy: number }[] = []
-    const numNodes = 50
-    const connectionDistance = 100
-
-    for (let i = 0; i < numNodes; i++) {
-      nodes.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2
-      })
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      // Update node positions
-      nodes.forEach(node => {
-        node.x += node.vx
-        node.y += node.vy
-
-        if (node.x < 0 || node.x > canvas.width) node.vx *= -1
-        if (node.y < 0 || node.y > canvas.height) node.vy *= -1
-
-        ctx.beginPath()
-        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(100, 100, 255, 0.5)'
-        ctx.fill()
-      })
-
-      // Draw connections
-      ctx.strokeStyle = 'rgba(100, 100, 255, 0.2)'
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x
-          const dy = nodes[i].y - nodes[j].y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < connectionDistance) {
-            ctx.beginPath()
-            ctx.moveTo(nodes[i].x, nodes[i].y)
-            ctx.lineTo(nodes[j].x, nodes[j].y)
-            ctx.stroke()
-          }
-        }
-      }
-
-      requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10" />
-}
+import { QuestBoard } from "@/components/quest/QuestBoard"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("quests")
@@ -140,116 +61,7 @@ export default function Home() {
               <TabsTrigger value="profile" className="data-[state=active]:bg-[#4A0E82] rounded-full">プロフィール</TabsTrigger>
             </TabsList>
             <TabsContent value="quests">
-              <div className="bg-[#2A0374] bg-opacity-30 p-8 rounded-3xl shadow-lg border border-[#4A0E82]">
-                <h2 className="text-3xl font-bold mb-6 text-center text-[#a29dff]">QUEST BOARD</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <QuestCard
-                    title="新規AI開発プロジェクト"
-                    description="最新の機械学習技術を活用した新規AIプロジェクトの立ち上げと開発"
-                    reward="プロジェクト成功報酬 + 特許取得ボーナス"
-                    difficulty="困難"
-                    icon={<Zap className="h-6 w-6" />}
-                    details="1. 最新の機械学習アルゴリズムの調査と選定
-2. データセットの収集と前処理
-3. モデルの設計と実装
-4. トレーニングとファインチューニング
-5. 性能評価と改善
-6. デプロイメントと運用計画の策定"
-                  />
-                  <QuestCard
-                    title="自然言語処理システム改善"
-                    description="既存の自然言語処理システムの精度向上と新機能追加"
-                    reward="性能向上率に応じたボーナス"
-                    difficulty="普通"
-                    icon={<Brain className="h-6 w-6" />}
-                    details="1. 現行システムの分析と課題抽出
-2. 最新のNLP技術の調査と適用検討
-3. モデルのアップデートと再学習
-4. 新機能の設計と実装
-5. テストと性能評価
-6. ドキュメンテーションの更新"
-                  />
-                  <QuestCard
-                    title="AI倫理ガイドライン策定"
-                    description="AIの開発と運用における倫理的ガイドラインの策定"
-                    reward="ガイドライン採用ボーナス"
-                    difficulty="普通"
-                    icon={<Users className="h-6 w-6" />}
-                    details="1. AI倫理に関する最新の研究と事例の調査
-2. ステークホルダーへのヒアリングと要件収集
-3. ガイドライン草案の作成
-4. 内部レビューと修正
-5. 外部専門家によるレビュー
-6. 最終版の策定と組織内への展開"
-                  />
-                  <QuestCard
-                    title="機械学習モデル最適化"
-                    description="既存の機械学習モデルのパフォーマンス改善と計算コスト削減"
-                    reward="効率化達成度に応じたボーナス"
-                    difficulty="困難"
-                    icon={<Settings className="h-6 w-6" />}
-                    details="1. 現行モデルの性能分析
-2. ボトルネックの特定
-3. モデルアーキテクチャの最適化
-4. ハイパーパラメータのチューニング
-5. 量子化やプルーニングの適用
-6. 改善後の性能評価とドキュメント化"
-                  />
-                  <QuestCard
-                    title="Difyを活用したAIアプリケーション開発"
-                    description="Difyプラットフォームを使用して、革新的なAIアプリケーションを設計・開発する"
-                    reward="開発されたアプリケーションの収益シェア"
-                    difficulty="普通"
-                    icon={<Zap className="h-6 w-6" />}
-                    details="1. Difyプラットフォームの機能と特徴の理解
-2. AIアプリケーションのコンセプト立案
-3. Difyを使用したプロトタイプの作成
-4. ユーザーフィードバックの収集と分析
-5. アプリケーションの改善と最適化
-6. 本番環境へのデプロイと運用"
-                  />
-                  <QuestCard
-                    title="V0を用いたUI/UXデザイン最適化"
-                    description="V0のAI支援機能を活用して、既存アプリケーションのUI/UXを改善する"
-                    reward="ユーザー満足度向上ボーナス"
-                    difficulty="普通"
-                    icon={<Edit className="h-6 w-6" />}
-                    details="1. 現行アプリケーションのUI/UX分析
-2. V0を使用した改善案の生成
-3. 生成された案の評価と選定
-4. 選定された改善案の実装
-5. A/Bテストの実施
-6. テスト結果に基づく最終的な改善の適用"
-                  />
-                  <QuestCard
-                    title="Cursorを活用したコーディング効率化"
-                    description="Cursorエディタを使用してコーディング作業の効率を大幅に向上させる"
-                    reward="生産性向上ボーナス"
-                    difficulty="簡単"
-                    icon={<Brain className="h-6 w-6" />}
-                    details="1. Cursorエディタの機能と使用方法の習得
-2. チーム内でのCursor活用ワークショップの開催
-3. 既存プロジェクトへのCursor導入
-4. コーディング速度と品質の測定
-5. Cursor使用前後の生産性比較
-6. ベストプラクティスの文書化と共有"
-                  />
-                  <QuestCard
-                    title="Voltを使用したデータ分析プロジェクト"
-                    description="Voltプラットフォームを利用して大規模データセットの分析と可視化を行う"
-                    reward="データインサイト発見ボーナス"
-                    difficulty="困難"
-                    icon={<BarChart className="h-6 w-6" />}
-                    details="1. 分析対象のデータセット選定
-2. Voltプラットフォームへのデータ取り込み
-3. データクレンジングと前処理
-4. 高度な分析モデルの構築
-5. インサイトの抽出と可視化
-6. 分析結果のプレゼンテーション作成
-7. 意思決定者へのレポート提出"
-                  />
-                </div>
-              </div>
+              <QuestBoard />
             </TabsContent>
             <TabsContent value="profile">
               <Tabs value={activeProfileTab} onValueChange={setActiveProfileTab}>
@@ -285,59 +97,82 @@ export default function Home() {
   )
 }
 
-function QuestCard({ title, description, reward, difficulty, details, icon }) {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Card className="cursor-pointer hover:shadow-lg transition-all bg-[#2A0374] bg-opacity-50 border-[#4A0E82] shadow-md transform hover:-translate-y-1 hover:rotate-1 rounded-xl overflow-hidden">
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                {icon}
-                <CardTitle className="text-lg text-[#B8A2FF]">{title}</CardTitle>
-              </div>
-              <Badge variant={difficulty === "簡単" ? "secondary" : difficulty === "普通" ? "default" : "destructive"} className="bg-[#4A0E82] text-white">
-                {difficulty}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-2 text-sm text-[#D8CCFF]">{description}</p>
-            <p className="font-semibold text-sm text-[#B8A2FF]">報酬: {reward}</p>
-          </CardContent>
-        </Card>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-[#120166] text-white">
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2 text-[#a29dff]">
-            {icon}
-            <span>{title}</span>
-          </DialogTitle>
-        </DialogHeader>
-        <div className="mt-4">
-          <h4 className="font-semibold mb-2 text-[#d4d0ff]">難易度:</h4>
-          <Badge variant={difficulty === "簡単" ? "secondary" : difficulty === "普通" ? "default" : "destructive"} className="bg-[#4A0E82] text-white">
-            {difficulty}
-          </Badge>
-        </div>
-        <div className="mt-4">
-          <h4 className="font-semibold mb-2 text-[#d4d0ff]">報酬:</h4>
-          <p className="text-[#a29dff]">{reward}</p>
-        </div>
-        <div className="mt-4">
-          <h4 className="font-semibold mb-2 text-[#d4d0ff]">詳細:</h4>
-          <ScrollArea className="h-[200px] w-full rounded-md border border-[#4A0E82] p-4 bg-[#2A0374] ">
-            <p className="whitespace-pre-line text-[#d4d0ff]">{details}</p>
-          </ScrollArea>
-        </div>
-        <DialogFooter>
-          <Button onClick={() => toast({ title: "クエストを受注しました", description: "頑張ってください！" })} className="w-full mt-4 bg-[#4A0E82] hover:bg-[#5A1E92] text-white">
-            クエストを受注する
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
+function NodeAnimation() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    const nodes: { x: number; y: number; vx: number; vy: number }[] = []
+    const numNodes = 50
+    const connectionDistance = 100
+
+    for (let i = 0; i < numNodes; i++) {
+      nodes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2
+      })
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      nodes.forEach(node => {
+        node.x += node.vx
+        node.y += node.vy
+
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1
+
+        ctx.beginPath()
+        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(100, 100, 255, 0.5)'
+        ctx.fill()
+      })
+
+      ctx.strokeStyle = 'rgba(100, 100, 255, 0.2)'
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x
+          const dy = nodes[i].y - nodes[j].y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+
+          if (distance < connectionDistance) {
+            ctx.beginPath()
+            ctx.moveTo(nodes[i].x, nodes[i].y)
+            ctx.lineTo(nodes[j].x, nodes[j].y)
+            ctx.stroke()
+          }
+        }
+      }
+
+      requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10" />
 }
 
 function ProfileCard({ profile, onEdit }) {
