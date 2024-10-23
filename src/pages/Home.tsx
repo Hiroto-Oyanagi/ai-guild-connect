@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { QuestBoard } from "@/components/quest/QuestBoard"
+import { UserList } from "@/components/profile/UserList"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("quests")
@@ -45,7 +46,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
       <NodeAnimation />
-      <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md flex justify-between items-center backdrop-blur-sm">
+      <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md flex justify-between items-center">
         <h1 className="text-2xl font-bold font-serif">AIギルド</h1>
         <Button variant="ghost" size="icon">
           <Settings className="h-6 w-6" />
@@ -78,6 +79,9 @@ export default function Home() {
                       onEdit={() => setIsEditing(true)}
                     />
                   )}
+                </TabsContent>
+                <TabsContent value="otherProfiles">
+                  <UserList />
                 </TabsContent>
               </Tabs>
             </TabsContent>
