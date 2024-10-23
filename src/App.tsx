@@ -7,6 +7,9 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import QuestDetails from "./pages/QuestDetails"
 import PartySearch from "./pages/PartySearch"
+import AcceptedJobs from "./pages/AcceptedJobs"
+import PartyRequests from "./pages/PartyRequests"
+import Messages from "./pages/Messages"
 
 const queryClient = new QueryClient()
 
@@ -21,6 +24,9 @@ const App = () => (
           <Route path="/home" element={<Home />} />
           <Route path="/quests/:categoryId" element={<QuestDetails />} />
           <Route path="/party-search/:questId" element={<PartySearch />} />
+          <Route path="/accepted-jobs" element={<AcceptedJobs />} />
+          <Route path="/party-requests" element={<PartyRequests />} />
+          <Route path="/messages" element={<Messages />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

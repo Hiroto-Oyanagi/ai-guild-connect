@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useNavigate } from "react-router-dom"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("quests")
@@ -30,6 +31,8 @@ export default function Home() {
     introduction: "AIギルド3年生。機械学習を専攻しており、特にディープラーニングと自然言語処理に興味があります。チームワークを大切にし、新しいアイデアを生み出すことが得意です。",
     skills: ["機械学習", "自然言語処理", "データ分析", "プロジェクト管理"]
   })
+
+  const navigate = useNavigate()
 
   const handleQuestClick = () => {
     setActiveTab("quests")
@@ -49,6 +52,10 @@ export default function Home() {
     })
   }
 
+  const handleMenuItemClick = (path: string) => {
+    navigate(path)
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
       <NodeAnimation />
@@ -62,23 +69,38 @@ export default function Home() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-[#2A0374] border-[#4A0E82] text-white">
-            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+            <DropdownMenuItem 
+              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+              onClick={() => handleMenuItemClick('/home')}
+            >
               <Scroll className="mr-2 h-4 w-4" />
               <span>クエスト</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+            <DropdownMenuItem 
+              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+              onClick={() => setActiveTab('profile')}
+            >
               <User className="mr-2 h-4 w-4" />
               <span>プロフィール</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+            <DropdownMenuItem 
+              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+              onClick={() => handleMenuItemClick('/accepted-jobs')}
+            >
               <Briefcase className="mr-2 h-4 w-4" />
               <span>引き受けた仕事</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+            <DropdownMenuItem 
+              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+              onClick={() => handleMenuItemClick('/party-requests')}
+            >
               <Users className="mr-2 h-4 w-4" />
               <span>パーティーの依頼</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-[#4A0E82]">
+            <DropdownMenuItem 
+              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+              onClick={() => handleMenuItemClick('/messages')}
+            >
               <MessageSquare className="mr-2 h-4 w-4" />
               <span>メッセージ</span>
             </DropdownMenuItem>
