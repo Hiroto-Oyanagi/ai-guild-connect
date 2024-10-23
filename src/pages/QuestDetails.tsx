@@ -1,12 +1,14 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { ArrowLeft } from "lucide-react"
 
 export default function QuestDetails() {
   const { categoryId } = useParams()
   const { toast } = useToast()
+  const navigate = useNavigate()
 
   // この部分は後でAPIから取得するデータに置き換えることができます
   const quests = [
@@ -37,6 +39,14 @@ export default function QuestDetails() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#120166] to-[#4A0E82] p-4">
       <div className="max-w-4xl mx-auto">
+        <Button 
+          variant="ghost" 
+          className="mb-4 text-white hover:text-[#a29dff]"
+          onClick={() => navigate('/home')}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          戻る
+        </Button>
         <Carousel className="w-full">
           <CarouselContent>
             {quests.map((quest) => (
