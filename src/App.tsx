@@ -13,6 +13,17 @@ import Messages from "./pages/Messages"
 
 const queryClient = new QueryClient()
 
+// プログラマーユーザーのみアクセスを許可するガード
+const ProgrammerRoute = ({ children }) => {
+  const userType = localStorage.getItem("userType");
+  
+  if (userType !== "programmer") {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -21,12 +32,54 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/quests/:categoryId" element={<QuestDetails />} />
-          <Route path="/party-search/:questId" element={<PartySearch />} />
-          <Route path="/accepted-jobs" element={<AcceptedJobs />} />
-          <Route path="/party-requests" element={<PartyRequests />} />
-          <Route path="/messages" element={<Messages />} />
+          <Route
+            path="/home"
+            element={
+              <ProgrammerRoute>
+                <Home />
+              </ProgrammerRoute>
+            }
+          />
+          <Route
+            path="/quests/:categoryId"
+            element={
+              <ProgrammerRoute>
+                <QuestDetails />
+              </ProgrammerRoute>
+            }
+          />
+          <Route
+            path="/party-search/:questId"
+            element={
+              <ProgrammerRoute>
+                <PartySearch />
+              </ProgrammerRoute>
+            }
+          />
+          <Route
+            path="/accepted-jobs"
+            element={
+              <ProgrammerRoute>
+                <AcceptedJobs />
+              </ProgrammerRoute>
+            }
+          />
+          <Route
+            path="/party-requests"
+            element={
+              <ProgrammerRoute>
+                <PartyRequests />
+              </ProgrammerRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProgrammerRoute>
+                <Messages />
+              </ProgrammerRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

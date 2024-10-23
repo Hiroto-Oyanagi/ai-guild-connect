@@ -27,13 +27,25 @@ const Login = () => {
       return;
     }
 
+    // ユーザータイプをローカルストレージに保存
+    localStorage.setItem("userType", type);
+
     toast({
       title: "ログイン成功",
       description: `${type === "programmer" ? "プログラマー" : "企業"}としてログインしました。`,
     });
     
-    // ログイン成功後、ホームページにリダイレクト
-    navigate("/home");
+    // プログラマーの場合のみホームページにリダイレクト
+    if (type === "programmer") {
+      navigate("/home");
+    } else {
+      // 企業向けのダッシュボードページを作成する必要があります
+      toast({
+        title: "お知らせ",
+        description: "企業向けダッシュボードは現在開発中です。",
+      });
+      navigate("/");
+    }
   };
 
   return (
