@@ -11,6 +11,7 @@ import AcceptedJobs from "./pages/AcceptedJobs"
 import PartyRequests from "./pages/PartyRequests"
 import Messages from "./pages/Messages"
 import CompanyDashboard from "./pages/CompanyDashboard"
+import CreateQuest from "./pages/CreateQuest"
 
 const queryClient = new QueryClient()
 
@@ -49,6 +50,14 @@ const App = () => (
             element={
               <CompanyRoute>
                 <CompanyDashboard />
+              </CompanyRoute>
+            }
+          />
+          <Route
+            path="/create-quest"
+            element={
+              <CompanyRoute>
+                <CreateQuest />
               </CompanyRoute>
             }
           />
