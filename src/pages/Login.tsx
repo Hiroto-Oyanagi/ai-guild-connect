@@ -18,7 +18,6 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // ここでは簡単な検証のみ実装
     if (!username || !password) {
       toast({
         title: "エラー",
@@ -28,11 +27,13 @@ const Login = () => {
       return;
     }
 
-    // TODO: 実際の認証処理を実装
     toast({
       title: "ログイン成功",
       description: `${type === "programmer" ? "プログラマー" : "企業"}としてログインしました。`,
     });
+    
+    // ログイン成功後、ホームページにリダイレクト
+    navigate("/home");
   };
 
   return (
