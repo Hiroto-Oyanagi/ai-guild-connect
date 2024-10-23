@@ -3,7 +3,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { ArrowLeft, Users } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { ArrowLeft, Users, Search } from "lucide-react"
 import { useState } from "react"
 
 export default function QuestDetails() {
@@ -19,15 +21,23 @@ export default function QuestDetails() {
       id: 1,
       title: "新規プロジェクト開発",
       description: "革新的な機能の実装",
+      detailedDescription: "このプロジェクトでは、最新のAI技術を活用した革新的な機能の実装を行います。主な業務内容には、機械学習モデルの開発、APIの設計と実装、フロントエンドの開発が含まれます。",
       reward: "100,000円",
-      difficulty: "中級"
+      difficulty: "中級",
+      requiredSkills: ["Python", "機械学習", "React"],
+      duration: "3ヶ月",
+      location: "リモート可"
     },
     {
       id: 2,
       title: "既存システム改善",
       description: "パフォーマンス最適化",
+      detailedDescription: "既存のシステムのパフォーマンスを改善し、レスポンス時間を50%削減することが目標です。データベースの最適化、キャッシュの実装、コードのリファクタリングなどが主な作業となります。",
       reward: "80,000円",
-      difficulty: "初級"
+      difficulty: "初級",
+      requiredSkills: ["SQL", "性能改善", "コードレビュー"],
+      duration: "2ヶ月",
+      location: "週2回オフィス"
     }
   ]
 
@@ -78,6 +88,54 @@ export default function QuestDetails() {
                         >
                           {appliedQuests.includes(quest.id) ? '応募済み' : '応募する'}
                         </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              variant="outline"
+                              className="border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
+                            >
+                              <Search className="mr-2 h-4 w-4" />
+                              仕事の詳細を見る
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-[#2A0374] text-white border border-[#4A0E82]">
+                            <DialogHeader>
+                              <DialogTitle className="text-[#a29dff] text-xl">{quest.title}</DialogTitle>
+                            </DialogHeader>
+                            <ScrollArea className="h-[60vh] pr-4">
+                              <div className="space-y-4">
+                                <div>
+                                  <h3 className="text-[#a29dff] font-semibold mb-2">詳細説明</h3>
+                                  <p className="text-[#d4d0ff]">{quest.detailedDescription}</p>
+                                </div>
+                                <div>
+                                  <h3 className="text-[#a29dff] font-semibold mb-2">必要なスキル</h3>
+                                  <div className="flex flex-wrap gap-2">
+                                    {quest.requiredSkills.map((skill, index) => (
+                                      <span key={index} className="bg-[#4A0E82] px-2 py-1 rounded text-sm text-white">
+                                        {skill}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <h3 className="text-[#a29dff] font-semibold mb-2">期間</h3>
+                                    <p className="text-[#d4d0ff]">{quest.duration}</p>
+                                  </div>
+                                  <div>
+                                    <h3 className="text-[#a29dff] font-semibold mb-2">勤務地</h3>
+                                    <p className="text-[#d4d0ff]">{quest.location}</p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <h3 className="text-[#a29dff] font-semibold mb-2">報酬</h3>
+                                  <p className="text-[#d4d0ff]">{quest.reward}</p>
+                                </div>
+                              </div>
+                            </ScrollArea>
+                          </DialogContent>
+                        </Dialog>
                         <Button 
                           onClick={() => handlePartySearch(quest.id)}
                           variant="outline"
