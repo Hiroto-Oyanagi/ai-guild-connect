@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { toast } from "@/components/ui/use-toast"
-import { LucideIcon } from "lucide-react"
+import { LucideIcon, ChevronDown } from "lucide-react"
+import { useState } from "react"
 
 interface QuestCardProps {
   title: string
@@ -16,6 +17,8 @@ interface QuestCardProps {
 }
 
 export function QuestCard({ title, description, reward, difficulty, details, icon }: QuestCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,8 +35,28 @@ export function QuestCard({ title, description, reward, difficulty, details, ico
             </div>
           </CardHeader>
           <CardContent>
-            <p className="mb-2 text-sm text-[#D8CCFF]">{description}</p>
-            <p className="font-semibold text-sm text-[#B8A2FF]">報酬: {reward}</p>
+            <div className="space-y-4">
+              <div className={`transition-all duration-300 ${isExpanded ? 'max-h-96' : 'max-h-20'} overflow-hidden`}>
+                <p className="mb-2 text-sm text-[#D8CCFF]">{description}</p>
+                {isExpanded && (
+                  <ScrollArea className="h-64 w-full rounded-md border border-[#4A0E82] p-4 bg-[#2A0374] bg-opacity-50">
+                    <p className="text-sm text-[#D8CCFF] whitespace-pre-line">{details}</p>
+                  </ScrollArea>
+                )}
+              </div>
+              <Button 
+                variant="ghost" 
+                className="w-full text-[#B8A2FF] hover:text-[#D8CCFF]"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsExpanded(!isExpanded)
+                }}
+              >
+                <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                {isExpanded ? '閉じる' : 'もっと見る'}
+              </Button>
+              <p className="font-semibold text-sm text-[#B8A2FF]">報酬: {reward}</p>
+            </div>
           </CardContent>
         </Card>
       </DialogTrigger>
@@ -56,7 +79,7 @@ export function QuestCard({ title, description, reward, difficulty, details, ico
         </div>
         <div className="mt-4">
           <h4 className="font-semibold mb-2 text-[#d4d0ff]">詳細:</h4>
-          <ScrollArea className="h-[200px] w-full rounded-md border border-[#4A0E82] p-4 bg-[#2A0374] ">
+          <ScrollArea className="h-[200px] w-full rounded-md border border-[#4A0E82] p-4 bg-[#2A0374]">
             <p className="whitespace-pre-line text-[#d4d0ff]">{details}</p>
           </ScrollArea>
         </div>
