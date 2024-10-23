@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus } from "lucide-react"
@@ -7,6 +8,11 @@ import { QuestCarousel } from "@/components/quest/QuestCarousel"
 
 export default function CompanyDashboard() {
   const navigate = useNavigate()
+  const [ongoingQuests, setOngoingQuests] = useState<Array<{
+    id: number;
+    title: string;
+    progress: number;
+  }>>([])
 
   // モックデータ
   const stats = [
@@ -17,7 +23,7 @@ export default function CompanyDashboard() {
     },
     {
       title: "進行中のプロジェクト",
-      value: "12",
+      value: String(ongoingQuests.length),
       icon: <FileText className="h-6 w-6" />
     },
     {
@@ -25,13 +31,6 @@ export default function CompanyDashboard() {
       value: "3",
       icon: <MessageSquare className="h-6 w-6" />
     }
-  ]
-
-  const ongoingQuests = [
-    { id: 1, title: "AIモデル最適化プロジェクト", progress: 65 },
-    { id: 2, title: "データ分析システム開発", progress: 30 },
-    { id: 3, title: "自然言語処理API開発", progress: 85 },
-    { id: 4, title: "機械学習モデル構築", progress: 45 },
   ]
 
   const handleViewProgress = (questId: number) => {
@@ -85,7 +84,21 @@ export default function CompanyDashboard() {
               <CardTitle className="text-[#a29dff]">進行中のプロジェクト</CardTitle>
             </CardHeader>
             <CardContent>
-              <QuestCarousel quests={ongoingQuests} onViewProgress={handleViewProgress} />
+              {ongoingQuests.length > 0 ? (
+                <QuestCarousel quests={ongoingQuests} onViewProgress={handleViewProgress} />
+              ) : (
+                <div className="text-center py-8 text-[#d4d0ff]">
+                  <p>進行中のプロジェクトはありません</p>
+                  <Button 
+                    variant="outline" 
+                    className="mt-4 border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
+                    onClick={() => navigate('/create-quest')}
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    新規クエストを作成
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
