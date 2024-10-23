@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { QuestCarousel } from "@/components/quest/QuestCarousel"
 
 export default function CompanyDashboard() {
   const navigate = useNavigate()
@@ -25,6 +26,18 @@ export default function CompanyDashboard() {
       icon: <MessageSquare className="h-6 w-6" />
     }
   ]
+
+  const ongoingQuests = [
+    { id: 1, title: "AIモデル最適化プロジェクト", progress: 65 },
+    { id: 2, title: "データ分析システム開発", progress: 30 },
+    { id: 3, title: "自然言語処理API開発", progress: 85 },
+    { id: 4, title: "機械学習モデル構築", progress: 45 },
+  ]
+
+  const handleViewProgress = (questId: number) => {
+    // 進捗確認画面への遷移処理を実装予定
+    console.log(`View progress for quest ${questId}`)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
@@ -67,49 +80,35 @@ export default function CompanyDashboard() {
             ))}
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
-              <CardHeader>
-                <CardTitle className="text-[#a29dff]">最近の応募</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[1, 2, 3].map((_, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-[#4A0E82] bg-opacity-30 rounded-lg">
-                      <div>
-                        <h4 className="font-semibold">AIモデル最適化プロジェクト</h4>
-                        <p className="text-sm text-[#d4d0ff]">3名の応募があります</p>
-                      </div>
-                      <Button variant="outline" className="border-[#a29dff] text-[#a29dff] hover:bg-[#4A0E82]">
-                        詳細を見る
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          <Card className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82] mb-8">
+            <CardHeader>
+              <CardTitle className="text-[#a29dff]">進行中のプロジェクト</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <QuestCarousel quests={ongoingQuests} onViewProgress={handleViewProgress} />
+            </CardContent>
+          </Card>
 
-            <Card className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
-              <CardHeader>
-                <CardTitle className="text-[#a29dff]">進行中のプロジェクト</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[1, 2, 3].map((_, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-[#4A0E82] bg-opacity-30 rounded-lg">
-                      <div>
-                        <h4 className="font-semibold">データ分析システム開発</h4>
-                        <p className="text-sm text-[#d4d0ff]">進捗率: 65%</p>
-                      </div>
-                      <Button variant="outline" className="border-[#a29dff] text-[#a29dff] hover:bg-[#4A0E82]">
-                        進捗を確認
-                      </Button>
+          <Card className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
+            <CardHeader>
+              <CardTitle className="text-[#a29dff]">最近の応募</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[1, 2, 3].map((_, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 bg-[#4A0E82] bg-opacity-30 rounded-lg">
+                    <div>
+                      <h4 className="font-semibold text-[#d4d0ff]">AIモデル最適化プロジェクト</h4>
+                      <p className="text-sm text-[#d4d0ff]">3名の応募があります</p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    <Button variant="outline" className="border-[#a29dff] text-[#a29dff] hover:bg-[#4A0E82]">
+                      詳細を見る
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </main>
       </ScrollArea>
     </div>
