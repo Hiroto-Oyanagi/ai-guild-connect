@@ -5,10 +5,10 @@ export function QuestBoard() {
   const navigate = useNavigate()
 
   const questCategories = [
-    { id: "dify", title: "Dify関連のクエスト", color: "from-purple-500 to-indigo-500" },
-    { id: "v0", title: "V0関連のクエスト", color: "from-blue-500 to-cyan-500" },
-    { id: "cursor", title: "Cursor関連のクエスト", color: "from-emerald-500 to-teal-500" },
-    { id: "bolt", title: "Bolt関連のクエスト", color: "from-orange-500 to-amber-500" }
+    { id: "dify", title: "Dify関連のクエスト", color: "from-[#9333EA] to-[#7C3AED]" },
+    { id: "v0", title: "V0関連のクエスト", color: "from-[#8B5CF6] to-[#7C3AED]" },
+    { id: "cursor", title: "Cursor関連のクエスト", color: "from-[#8B5CF6] to-[#6D28D9]" },
+    { id: "bolt", title: "Bolt関連のクエスト", color: "from-[#9333EA] to-[#6D28D9]" }
   ]
 
   return (
