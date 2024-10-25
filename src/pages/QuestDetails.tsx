@@ -28,6 +28,16 @@ const fetchQuests = async () => {
   return data
 }
 
+const getCategorySkill = (categoryId: string): string => {
+  const categoryMap: { [key: string]: string } = {
+    'dify': 'Dify',
+    'v0': 'V0',
+    'cursor': 'Cursor',
+    'bolt': 'Bolt'
+  }
+  return categoryMap[categoryId] || ''
+}
+
 export default function QuestDetails() {
   const { categoryId } = useParams()
   const { toast } = useToast()
@@ -35,10 +45,15 @@ export default function QuestDetails() {
   const [appliedQuests, setAppliedQuests] = useState<number[]>([])
   const [searchingParty, setSearchingParty] = useState<number[]>([])
 
-  const { data: quests = [], isLoading } = useQuery({
+  const { data: allQuests = [], isLoading } = useQuery({
     queryKey: ['quests'],
     queryFn: fetchQuests,
   })
+
+  // カテゴリーに基づいてクエストをフィルタリング
+  const filteredQuests = allQuests.filter((quest: Quest) => 
+    quest.skill === getCategorySkill(categoryId || '')
+  )
 
   const handleApply = (questId: number) => {
     setAppliedQuests(prev => [...prev, questId])
@@ -65,13 +80,21 @@ export default function QuestDetails() {
           戻る
         </Button>
 
+        <h2 className="text-2xl font-bold mb-6 text-[#a29dff]">
+          {getCategorySkill(categoryId || '')}関連のクエスト
+        </h2>
+
         {isLoading ? (
           <div className="text-center py-8 text-[#d4d0ff]">
             <p>クエストを読み込み中...</p>
           </div>
+        ) : filteredQuests.length === 0 ? (
+          <div className="text-center py-8 text-[#d4d0ff]">
+            <p>このカテゴリーのクエストはまだありません</p>
+          </div>
         ) : (
           <div className="space-y-4">
-            {quests.map((quest: Quest) => (
+            {filteredQuests.map((quest: Quest) => (
               <Card key={quest.id} className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
                 <CardContent className="p-6">
                   <div className="text-center space-y-4">
