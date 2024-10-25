@@ -2,10 +2,12 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
-import { Users } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { ArrowLeft, Users, Search } from "lucide-react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { supabase } from "@/integrations/supabase/client"
-import { useState } from "react"
 
 interface Quest {
   id: number;
@@ -48,31 +50,17 @@ export default function QuestDetails() {
     queryFn: fetchQuests,
   })
 
+  // カテゴリーに基づいてクエストをフィルタリング
   const filteredQuests = allQuests.filter((quest: Quest) => 
     quest.skill === getCategorySkill(categoryId || '')
   )
 
-  const handleApply = async (questId: number) => {
-    try {
-      const { error } = await supabase
-        .from('Quest')
-        .update({ status: 'accepted' })
-        .eq('id', questId)
-
-      if (error) throw error
-
-      setAppliedQuests(prev => [...prev, questId])
-      toast({
-        title: "応募完了",
-        description: "クエストへの応募が完了しました",
-      })
-    } catch (error) {
-      toast({
-        title: "エラー",
-        description: "応募に失敗しました",
-        variant: "destructive"
-      })
-    }
+  const handleApply = (questId: number) => {
+    setAppliedQuests(prev => [...prev, questId])
+    toast({
+      title: "応募完了",
+      description: "クエストへの応募が完了しました",
+    })
   }
 
   const handlePartySearch = (questId: number) => {
@@ -88,6 +76,7 @@ export default function QuestDetails() {
           className="mb-4 text-white hover:text-[#a29dff]"
           onClick={() => navigate('/home')}
         >
+          <ArrowLeft className="mr-2 h-4 w-4" />
           戻る
         </Button>
 
