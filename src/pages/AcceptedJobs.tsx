@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { useQuery } from "@tanstack/react-query"
 import { supabase } from "@/integrations/supabase/client"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -14,7 +12,6 @@ interface AcceptedQuest {
   skill: string;
   deadline: string;
   compensation: number;
-  status: string;
 }
 
 export default function AcceptedJobs() {
@@ -64,14 +61,8 @@ export default function AcceptedJobs() {
                   className="bg-[#2A0374] bg-opacity-30 border-[#4A0E82] hover:bg-opacity-50 transition-all"
                 >
                   <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
+                    <div className="mb-4">
                       <h3 className="text-lg font-semibold text-[#a29dff]">{quest.title}</h3>
-                      <Badge 
-                        variant="secondary"
-                        className="bg-[#4A0E82] text-white"
-                      >
-                        {quest.status}
-                      </Badge>
                     </div>
                     <div className="space-y-2 text-[#d4d0ff]">
                       <p className="text-sm">{quest.detail}</p>
