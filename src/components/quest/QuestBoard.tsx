@@ -31,10 +31,30 @@ export function QuestBoard() {
 
   // クエストをカテゴリーごとにグループ化
   const questCategories = [
-    { id: "dify", title: "Dify関連のクエスト", color: "from-[#9333EA] to-[#7C3AED]" },
-    { id: "v0", title: "V0関連のクエスト", color: "from-[#8B5CF6] to-[#7C3AED]" },
-    { id: "cursor", title: "Cursor関連のクエスト", color: "from-[#8B5CF6] to-[#6D28D9]" },
-    { id: "bolt", title: "Bolt関連のクエスト", color: "from-[#9333EA] to-[#6D28D9]" }
+    { 
+      id: "dify", 
+      title: "Dify関連のクエスト", 
+      color: "from-[#9333EA] to-[#7C3AED]",
+      filter: (quest: Quest) => quest.skill?.toLowerCase().includes('dify')
+    },
+    { 
+      id: "v0", 
+      title: "V0関連のクエスト", 
+      color: "from-[#8B5CF6] to-[#7C3AED]",
+      filter: (quest: Quest) => quest.skill?.toLowerCase().includes('v0')
+    },
+    { 
+      id: "cursor", 
+      title: "Cursor関連のクエスト", 
+      color: "from-[#8B5CF6] to-[#6D28D9]",
+      filter: (quest: Quest) => quest.skill?.toLowerCase().includes('cursor')
+    },
+    { 
+      id: "bolt", 
+      title: "Bolt関連のクエスト", 
+      color: "from-[#9333EA] to-[#6D28D9]",
+      filter: (quest: Quest) => quest.skill?.toLowerCase().includes('bolt')
+    }
   ]
 
   return (
@@ -46,30 +66,36 @@ export function QuestBoard() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {questCategories.map((category) => (
-            <Card 
-              key={category.id}
-              className={`cursor-pointer transform transition-all duration-300 hover:scale-105 overflow-hidden bg-gradient-to-br ${category.color}`}
-              onClick={() => navigate(`/quests/${category.id}`)}
-            >
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold text-white">{category.title}</h3>
-                <div className="mt-4">
-                  <p className="text-white/80 text-sm mb-2">
-                    利用可能なクエスト: {quests.length}件
-                  </p>
-                  <div className="h-24 overflow-hidden">
-                    {quests.slice(0, 2).map((quest: Quest) => (
-                      <div key={quest.id} className="text-white/60 text-sm mb-1 truncate">
-                        {quest.title}
-                      </div>
-                    ))}
+          {questCategories.map((category) => {
+            const categoryQuests = quests.filter(category.filter)
+            
+            return (
+              <Card 
+                key={category.id}
+                className={`cursor-pointer transform transition-all duration-300 hover:scale-105 overflow-hidden bg-gradient-to-br ${category.color}`}
+                onClick={() => navigate(`/quests/${category.id}`)}
+              >
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold text-white">{category.title}</h3>
+                  <div className="mt-4">
+                    <p className="text-white/80 text-sm mb-2">
+                      利用可能なクエスト: {categoryQuests.length}件
+                    </p>
+                    <div className="h-24 overflow-hidden">
+                      {categoryQuests.slice(0, 2).map((quest: Quest) => (
+                        <div key={quest.id} className="text-white/60 text-sm mb-1 truncate">
+                          {quest.title}
+                        </div>
+                      ))}
+                    </div>
+                    {categoryQuests.length > 0 && (
+                      <span className="text-white/60 text-sm">クリックして詳細を見る</span>
+                    )}
                   </div>
-                  <span className="text-white/60 text-sm">クリックして詳細を見る</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       )}
     </div>
