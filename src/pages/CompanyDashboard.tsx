@@ -1,18 +1,42 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { QuestCarousel } from "@/components/quest/QuestCarousel"
+import { supabase } from "@/integrations/supabase/client"
+
+interface Quest {
+  id: number;
+  title: string;
+  detail: string;
+  skill: string;
+  deadline: string;
+  compensation: number;
+}
 
 export default function CompanyDashboard() {
   const navigate = useNavigate()
-  const [ongoingQuests, setOngoingQuests] = useState<Array<{
-    id: number;
-    title: string;
-    progress: number;
-  }>>([])
+  const [ongoingQuests, setOngoingQuests] = useState<Quest[]>([])
+
+  useEffect(() => {
+    fetchQuests()
+  }, [])
+
+  const fetchQuests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('Quest')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setOngoingQuests(data || [])
+    } catch (error) {
+      console.error('Error fetching quests:', error)
+    }
+  }
 
   // モックデータ
   const stats = [
@@ -32,11 +56,6 @@ export default function CompanyDashboard() {
       icon: <MessageSquare className="h-6 w-6" />
     }
   ]
-
-  const handleViewProgress = (questId: number) => {
-    // 進捗確認画面への遷移処理を実装予定
-    console.log(`View progress for quest ${questId}`)
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
@@ -84,9 +103,22 @@ export default function CompanyDashboard() {
               <CardTitle className="text-[#a29dff]">進行中のプロジェクト</CardTitle>
             </CardHeader>
             <CardContent>
-              {ongoingQuests.length > 0 ? (
-                <QuestCarousel quests={ongoingQuests} onViewProgress={handleViewProgress} />
-              ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {ongoingQuests.map((quest) => (
+                  <Card key={quest.id} className="bg-[#2A0374] bg-opacity-30 border-[#4A0E82]">
+                    <CardContent className="p-4">
+                      <h3 className="text-lg font-semibold text-[#a29dff] mb-2">{quest.title}</h3>
+                      <p className="text-sm text-[#d4d0ff] mb-2">{quest.detail}</p>
+                      <div className="space-y-1 text-sm text-[#d4d0ff]">
+                        <p>必要スキル: {quest.skill}</p>
+                        <p>期間: {quest.deadline}</p>
+                        <p>報酬: {quest.compensation}円</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              {ongoingQuests.length === 0 && (
                 <div className="text-center py-8 text-[#d4d0ff]">
                   <p>進行中のプロジェクトはありません</p>
                   <Button 
