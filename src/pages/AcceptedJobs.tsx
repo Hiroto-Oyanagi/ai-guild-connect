@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { useQuery } from "@tanstack/react-query"
 import { supabase } from "@/integrations/supabase/client"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-interface AcceptedQuest {
+interface Quest {
   id: number;
   title: string;
   detail: string;
@@ -55,7 +56,7 @@ export default function AcceptedJobs() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {acceptedQuests.map((quest: AcceptedQuest) => (
+              {acceptedQuests.map((quest: Quest) => (
                 <Card 
                   key={quest.id}
                   className="bg-[#2A0374] bg-opacity-30 border-[#4A0E82] hover:bg-opacity-50 transition-all"
