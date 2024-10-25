@@ -4,21 +4,42 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { QuestForm } from "@/components/quest/QuestForm"
 import { useToast } from "@/components/ui/use-toast"
+import { supabase } from "@/integrations/supabase/client"
 
 export default function CreateQuest() {
   const navigate = useNavigate()
   const { toast } = useToast()
 
-  const handleSubmit = (formData: FormData) => {
-    // ここでAPIを呼び出してクエストを保存する処理を追加予定
-    console.log(formData)
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      const questData = {
+        title: formData.get('title') as string,
+        detail: formData.get('description') as string,
+        skill: formData.get('skills') as string,
+        deadline: formData.get('duration') as string,
+        compensation: parseInt(formData.get('reward') as string),
+      }
 
-    toast({
-      title: "クエストを作成しました",
-      description: "新しいクエストが正常に作成されました。",
-    })
+      const { error } = await supabase
+        .from('Quest')
+        .insert([questData])
 
-    navigate("/company-dashboard")
+      if (error) throw error
+
+      toast({
+        title: "クエストを作成しました",
+        description: "新しいクエストが正常に作成されました。",
+      })
+
+      navigate("/company-dashboard")
+    } catch (error) {
+      console.error('Error creating quest:', error)
+      toast({
+        title: "エラーが発生しました",
+        description: "クエストの作成に失敗しました。もう一度お試しください。",
+        variant: "destructive",
+      })
+    }
   }
 
   return (
