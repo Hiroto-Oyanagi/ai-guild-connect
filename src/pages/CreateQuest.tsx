@@ -5,17 +5,35 @@ import { Button } from "@/components/ui/button"
 import { QuestForm } from "@/components/quest/QuestForm"
 import { useToast } from "@/components/ui/use-toast"
 import { supabase } from "@/integrations/supabase/client"
+import { useAuth } from "@/contexts/AuthContext"
+import { useEffect } from "react"
 
 export default function CreateQuest() {
   const navigate = useNavigate()
   const { toast } = useToast()
+  const { session, loading } = useAuth()
+
+  useEffect(() => {
+    if (!loading && !session) {
+      navigate('/login')
+    }
+  }, [session, loading, navigate])
 
   const handleSubmit = async (formData: FormData) => {
+    if (!session) {
+      toast({
+        title: "エラー",
+        description: "ログインが必要です。",
+        variant: "destructive"
+      })
+      return
+    }
+
     try {
       const questData = {
         title: formData.get('title') as string,
         detail: formData.get('description') as string,
-        skill: formData.getAll('skills').join(', '), // 複数のスキルをカンマ区切りで保存
+        skill: formData.getAll('skills').join(', '),
         deadline: formData.get('duration') as string,
         compensation: parseInt(formData.get('reward') as string, 10)
       }
@@ -40,6 +58,14 @@ export default function CreateQuest() {
         variant: "destructive"
       })
     }
+  }
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  if (!session) {
+    return null
   }
 
   return (
