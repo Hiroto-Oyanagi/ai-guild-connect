@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus, Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { QuestCarousel } from "@/components/quest/QuestCarousel"
@@ -19,6 +20,7 @@ interface Quest {
 export default function CompanyDashboard() {
   const navigate = useNavigate()
   const [ongoingQuests, setOngoingQuests] = useState<Quest[]>([])
+  const [selectedQuest, setSelectedQuest] = useState<Quest | null>(null)
 
   useEffect(() => {
     fetchQuests()
@@ -38,7 +40,6 @@ export default function CompanyDashboard() {
     }
   }
 
-  // モックデータ
   const stats = [
     {
       title: "登録済みAIプログラマー",
@@ -105,15 +106,13 @@ export default function CompanyDashboard() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {ongoingQuests.map((quest) => (
-                  <Card key={quest.id} className="bg-[#2A0374] bg-opacity-30 border-[#4A0E82]">
+                  <Card 
+                    key={quest.id} 
+                    className="bg-[#2A0374] bg-opacity-30 border-[#4A0E82] cursor-pointer hover:bg-opacity-50 transition-all"
+                    onClick={() => setSelectedQuest(quest)}
+                  >
                     <CardContent className="p-4">
-                      <h3 className="text-lg font-semibold text-[#a29dff] mb-2">{quest.title}</h3>
-                      <p className="text-sm text-[#d4d0ff] mb-2">{quest.detail}</p>
-                      <div className="space-y-1 text-sm text-[#d4d0ff]">
-                        <p>必要スキル: {quest.skill}</p>
-                        <p>期間: {quest.deadline}</p>
-                        <p>報酬: {quest.compensation}円</p>
-                      </div>
+                      <h3 className="text-lg font-semibold text-[#a29dff] truncate">{quest.title}</h3>
                     </CardContent>
                   </Card>
                 ))}
@@ -133,6 +132,36 @@ export default function CompanyDashboard() {
               )}
             </CardContent>
           </Card>
+
+          <Dialog open={!!selectedQuest} onOpenChange={() => setSelectedQuest(null)}>
+            <DialogContent className="bg-[#2A0374] text-white border border-[#4A0E82]">
+              <DialogHeader>
+                <DialogTitle className="text-[#a29dff] text-xl">{selectedQuest?.title}</DialogTitle>
+              </DialogHeader>
+              <ScrollArea className="h-[60vh] pr-4">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-[#a29dff] font-semibold mb-2">詳細説明</h3>
+                    <p className="text-[#d4d0ff]">{selectedQuest?.detail}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-[#a29dff] font-semibold mb-2">必要なスキル</h3>
+                    <p className="text-[#d4d0ff]">{selectedQuest?.skill}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h3 className="text-[#a29dff] font-semibold mb-2">期間</h3>
+                      <p className="text-[#d4d0ff]">{selectedQuest?.deadline}</p>
+                    </div>
+                    <div>
+                      <h3 className="text-[#a29dff] font-semibold mb-2">報酬</h3>
+                      <p className="text-[#d4d0ff]">{selectedQuest?.compensation}円</p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
 
           <Card className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
             <CardHeader>
