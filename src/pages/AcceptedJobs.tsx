@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { useQuery } from "@tanstack/react-query"
@@ -39,7 +38,6 @@ export default function AcceptedJobs() {
           className="mb-4 text-white hover:text-[#a29dff]"
           onClick={() => navigate(-1)}
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
           戻る
         </Button>
 

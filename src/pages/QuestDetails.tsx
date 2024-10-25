@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
-import { ArrowLeft, Users } from "lucide-react"
+import { Users } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { supabase } from "@/integrations/supabase/client"
 import { useState } from "react"
@@ -88,7 +88,6 @@ export default function QuestDetails() {
           className="mb-4 text-white hover:text-[#a29dff]"
           onClick={() => navigate('/home')}
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
           戻る
         </Button>
 
