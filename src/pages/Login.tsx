@@ -1,71 +1,43 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("programmer");
+  const type = searchParams.get("type") || "programmer";
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!username || !password) {
       toast({
         title: "エラー",
-        description: "メールアドレスとパスワードを入力してください。",
+        description: "ユーザー名とパスワードを入力してください。",
         variant: "destructive",
       });
       return;
     }
 
-    try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              user_type: userType
-            }
-          }
-        });
-        
-        if (error) throw error;
-        
-        toast({
-          title: "アカウント作成成功",
-          description: "アカウントが作成されました。メールを確認してください。",
-        });
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
-        if (error) throw error;
+    localStorage.setItem("userType", type);
 
-        if (userType === "programmer") {
-          navigate("/home");
-        } else {
-          navigate("/company-dashboard");
-        }
-      }
-    } catch (error) {
-      toast({
-        title: "エラー",
-        description: error.message,
-        variant: "destructive",
-      });
+    toast({
+      title: "ログイン成功",
+      description: `${type === "programmer" ? "プログラマー" : "企業"}としてログインしました。`,
+    });
+    
+    if (type === "programmer") {
+      navigate("/home");
+    } else {
+      navigate("/company-dashboard");
     }
   };
 
@@ -74,26 +46,19 @@ const Login = () => {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
-            {isSignUp ? "新規アカウント作成" : "ログイン"}
+            {type === "programmer" ? "プログラマー" : "企業"}としてログイン
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Tabs value={userType} onValueChange={setUserType} className="mb-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="programmer">プログラマー</TabsTrigger>
-              <TabsTrigger value="company">企業</TabsTrigger>
-            </TabsList>
-          </Tabs>
-
-          <form onSubmit={handleAuth} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email">メールアドレス</Label>
+              <Label htmlFor="username">ユーザー名</Label>
               <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="メールアドレスを入力"
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="ユーザー名を入力"
               />
             </div>
             <div className="space-y-2">
@@ -107,19 +72,8 @@ const Login = () => {
               />
             </div>
             <Button type="submit" className="w-full">
-              {isSignUp ? "アカウントを作成" : "ログイン"}
+              ログイン
             </Button>
-            <div className="text-center text-sm">
-              <button
-                type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-blue-600 hover:underline"
-              >
-                {isSignUp
-                  ? "既にアカウントをお持ちの方はこちら"
-                  : "新規アカウントを作成"}
-              </button>
-            </div>
             <Button
               type="button"
               variant="outline"
