@@ -4,34 +4,32 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Upload, X } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface QuestFormProps {
   onSubmit: (formData: FormData) => void;
 }
 
 export function QuestForm({ onSubmit }: QuestFormProps) {
-  const [skills, setSkills] = useState<string[]>([])
-  const [newSkill, setNewSkill] = useState("")
   const [files, setFiles] = useState<File[]>([])
+  const [selectedSkill, setSelectedSkill] = useState<string>("")
+
+  const AVAILABLE_SKILLS = ["Dify", "V0", "Cursor", "Bolt"]
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    formData.set('skills', selectedSkill) // スキルを設定
     files.forEach(file => {
       formData.append('files', file)
     })
     onSubmit(formData)
-  }
-
-  const handleAddSkill = () => {
-    if (newSkill && !skills.includes(newSkill)) {
-      setSkills([...skills, newSkill])
-      setNewSkill("")
-    }
-  }
-
-  const handleRemoveSkill = (skillToRemove: string) => {
-    setSkills(skills.filter(skill => skill !== skillToRemove))
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,39 +68,23 @@ export function QuestForm({ onSubmit }: QuestFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label className="text-[#d4d0ff]">必要なスキル</Label>
-        <div className="flex gap-2 mb-2">
-          <Input
-            value={newSkill}
-            onChange={(e) => setNewSkill(e.target.value)}
-            className="bg-[#120166] bg-opacity-50 border-[#4A0E82] text-white"
-            placeholder="必要なスキルを入力"
-          />
-          <Button 
-            type="button" 
-            onClick={handleAddSkill}
-            className="bg-[#4A0E82] hover:bg-[#5A1E92] text-white"
-          >
-            追加
-          </Button>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {skills.map((skill, index) => (
-            <span
-              key={index}
-              className="bg-[#4A0E82] text-white px-3 py-1 rounded-full flex items-center gap-2"
-            >
-              {skill}
-              <button
-                type="button"
-                onClick={() => handleRemoveSkill(skill)}
-                className="text-red-300 hover:text-red-100"
+        <Label htmlFor="skill" className="text-[#d4d0ff]">必要なスキル</Label>
+        <Select value={selectedSkill} onValueChange={setSelectedSkill}>
+          <SelectTrigger className="bg-[#120166] bg-opacity-50 border-[#4A0E82] text-white">
+            <SelectValue placeholder="スキルを選択してください" />
+          </SelectTrigger>
+          <SelectContent className="bg-[#2A0374] border-[#4A0E82]">
+            {AVAILABLE_SKILLS.map((skill) => (
+              <SelectItem 
+                key={skill} 
+                value={skill}
+                className="text-white hover:bg-[#4A0E82] focus:bg-[#4A0E82]"
               >
-                ×
-              </button>
-            </span>
-          ))}
-        </div>
+                {skill}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="space-y-2">
