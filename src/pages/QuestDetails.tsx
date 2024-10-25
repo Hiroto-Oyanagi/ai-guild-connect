@@ -2,11 +2,31 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ArrowLeft, Users, Search } from "lucide-react"
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { supabase } from "@/integrations/supabase/client"
+
+interface Quest {
+  id: number;
+  title: string;
+  detail: string;
+  skill: string;
+  deadline: string;
+  compensation: number;
+}
+
+const fetchQuests = async () => {
+  const { data, error } = await supabase
+    .from('Quest')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) throw error
+  return data
+}
 
 export default function QuestDetails() {
   const { categoryId } = useParams()
@@ -15,31 +35,10 @@ export default function QuestDetails() {
   const [appliedQuests, setAppliedQuests] = useState<number[]>([])
   const [searchingParty, setSearchingParty] = useState<number[]>([])
 
-  // この部分は後でAPIから取得するデータに置き換えることができます
-  const quests = [
-    {
-      id: 1,
-      title: "新規プロジェクト開発",
-      description: "革新的な機能の実装",
-      detailedDescription: "このプロジェクトでは、最新のAI技術を活用した革新的な機能の実装を行います。主な業務内容には、機械学習モデルの開発、APIの設計と実装、フロントエンドの開発が含まれます。",
-      reward: "100,000円",
-      difficulty: "中級",
-      requiredSkills: ["Python", "機械学習", "React"],
-      duration: "3ヶ月",
-      location: "リモート可"
-    },
-    {
-      id: 2,
-      title: "既存システム改善",
-      description: "パフォーマンス最適化",
-      detailedDescription: "既存のシステムのパフォーマンスを改善し、レスポンス時間を50%削減することが目標です。データベースの最適化、キャッシュの実装、コードのリファクタリングなどが主な作業となります。",
-      reward: "80,000円",
-      difficulty: "初級",
-      requiredSkills: ["SQL", "性能改善", "コードレビュー"],
-      duration: "2ヶ月",
-      location: "週2回オフィス"
-    }
-  ]
+  const { data: quests = [], isLoading } = useQuery({
+    queryKey: ['quests'],
+    queryFn: fetchQuests,
+  })
 
   const handleApply = (questId: number) => {
     setAppliedQuests(prev => [...prev, questId])
@@ -65,95 +64,49 @@ export default function QuestDetails() {
           <ArrowLeft className="mr-2 h-4 w-4" />
           戻る
         </Button>
-        <Carousel className="w-full">
-          <CarouselContent>
-            {quests.map((quest) => (
-              <CarouselItem key={quest.id}>
-                <Card className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
-                  <CardContent className="p-6">
-                    <div className="text-center space-y-4">
-                      <h2 className="text-2xl font-bold text-[#a29dff]">{quest.title}</h2>
-                      <p className="text-[#d4d0ff]">{quest.description}</p>
-                      <div className="space-y-2">
-                        <p className="text-[#d4d0ff]">報酬: {quest.reward}</p>
-                        <p className="text-[#d4d0ff]">難易度: {quest.difficulty}</p>
-                      </div>
-                      <div className="flex justify-center gap-4">
-                        <Button 
-                          onClick={() => handleApply(quest.id)}
-                          disabled={appliedQuests.includes(quest.id)}
-                          className={`bg-[#4A0E82] hover:bg-[#5A1E92] text-white ${
-                            appliedQuests.includes(quest.id) ? 'opacity-50 cursor-not-allowed' : ''
-                          }`}
-                        >
-                          {appliedQuests.includes(quest.id) ? '応募済み' : '応募する'}
-                        </Button>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button 
-                              variant="outline"
-                              className="border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
-                            >
-                              <Search className="mr-2 h-4 w-4" />
-                              仕事の詳細を見る
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="bg-[#2A0374] text-white border border-[#4A0E82]">
-                            <DialogHeader>
-                              <DialogTitle className="text-[#a29dff] text-xl">{quest.title}</DialogTitle>
-                            </DialogHeader>
-                            <ScrollArea className="h-[60vh] pr-4">
-                              <div className="space-y-4">
-                                <div>
-                                  <h3 className="text-[#a29dff] font-semibold mb-2">詳細説明</h3>
-                                  <p className="text-[#d4d0ff]">{quest.detailedDescription}</p>
-                                </div>
-                                <div>
-                                  <h3 className="text-[#a29dff] font-semibold mb-2">必要なスキル</h3>
-                                  <div className="flex flex-wrap gap-2">
-                                    {quest.requiredSkills.map((skill, index) => (
-                                      <span key={index} className="bg-[#4A0E82] px-2 py-1 rounded text-sm text-white">
-                                        {skill}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <h3 className="text-[#a29dff] font-semibold mb-2">期間</h3>
-                                    <p className="text-[#d4d0ff]">{quest.duration}</p>
-                                  </div>
-                                  <div>
-                                    <h3 className="text-[#a29dff] font-semibold mb-2">勤務地</h3>
-                                    <p className="text-[#d4d0ff]">{quest.location}</p>
-                                  </div>
-                                </div>
-                                <div>
-                                  <h3 className="text-[#a29dff] font-semibold mb-2">報酬</h3>
-                                  <p className="text-[#d4d0ff]">{quest.reward}</p>
-                                </div>
-                              </div>
-                            </ScrollArea>
-                          </DialogContent>
-                        </Dialog>
-                        <Button 
-                          onClick={() => handlePartySearch(quest.id)}
-                          variant="outline"
-                          className="border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
-                        >
-                          <Users className="mr-2 h-4 w-4" />
-                          パーティーを探す
-                        </Button>
-                      </div>
+
+        {isLoading ? (
+          <div className="text-center py-8 text-[#d4d0ff]">
+            <p>クエストを読み込み中...</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {quests.map((quest: Quest) => (
+              <Card key={quest.id} className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <h2 className="text-2xl font-bold text-[#a29dff]">{quest.title}</h2>
+                    <p className="text-[#d4d0ff]">{quest.detail}</p>
+                    <div className="space-y-2">
+                      <p className="text-[#d4d0ff]">報酬: {quest.compensation}円</p>
+                      <p className="text-[#d4d0ff]">期間: {quest.deadline}</p>
+                      <p className="text-[#d4d0ff]">必要スキル: {quest.skill}</p>
                     </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
+                    <div className="flex justify-center gap-4">
+                      <Button 
+                        onClick={() => handleApply(quest.id)}
+                        disabled={appliedQuests.includes(quest.id)}
+                        className={`bg-[#4A0E82] hover:bg-[#5A1E92] text-white ${
+                          appliedQuests.includes(quest.id) ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                      >
+                        {appliedQuests.includes(quest.id) ? '応募済み' : '応募する'}
+                      </Button>
+                      <Button 
+                        onClick={() => handlePartySearch(quest.id)}
+                        variant="outline"
+                        className="border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
+                      >
+                        <Users className="mr-2 h-4 w-4" />
+                        パーティーを探す
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+          </div>
+        )}
       </div>
     </div>
   )
