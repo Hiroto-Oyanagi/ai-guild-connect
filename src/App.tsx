@@ -1,9 +1,11 @@
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { AuthProvider } from "./components/auth/AuthProvider"
+import { ProtectedRoute } from "./components/auth/ProtectedRoute"
 import Index from "./pages/Index"
-import Login from "./pages/Login"
+import AuthPage from "./pages/Auth"
 import Home from "./pages/Home"
 import QuestDetails from "./pages/QuestDetails"
 import PartySearch from "./pages/PartySearch"
@@ -15,101 +17,81 @@ import CreateQuest from "./pages/CreateQuest"
 
 const queryClient = new QueryClient()
 
-// プログラマーユーザーのみアクセスを許可するガード
-const ProgrammerRoute = ({ children }) => {
-  const userType = localStorage.getItem("userType");
-  
-  if (userType !== "programmer") {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
-
-// 企業ユーザーのみアクセスを許可するガード
-const CompanyRoute = ({ children }) => {
-  const userType = localStorage.getItem("userType");
-  
-  if (userType !== "company") {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/company-dashboard"
-            element={
-              <CompanyRoute>
-                <CompanyDashboard />
-              </CompanyRoute>
-            }
-          />
-          <Route
-            path="/create-quest"
-            element={
-              <CompanyRoute>
-                <CreateQuest />
-              </CompanyRoute>
-            }
-          />
-          <Route
-            path="/home"
-            element={
-              <ProgrammerRoute>
-                <Home />
-              </ProgrammerRoute>
-            }
-          />
-          <Route
-            path="/quests/:categoryId"
-            element={
-              <ProgrammerRoute>
-                <QuestDetails />
-              </ProgrammerRoute>
-            }
-          />
-          <Route
-            path="/party-search/:questId"
-            element={
-              <ProgrammerRoute>
-                <PartySearch />
-              </ProgrammerRoute>
-            }
-          />
-          <Route
-            path="/accepted-jobs"
-            element={
-              <ProgrammerRoute>
-                <AcceptedJobs />
-              </ProgrammerRoute>
-            }
-          />
-          <Route
-            path="/party-requests"
-            element={
-              <ProgrammerRoute>
-                <PartyRequests />
-              </ProgrammerRoute>
-            }
-          />
-          <Route
-            path="/messages"
-            element={
-              <ProgrammerRoute>
-                <Messages />
-              </ProgrammerRoute>
-            }
-          />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/quests/:categoryId"
+              element={
+                <ProtectedRoute>
+                  <QuestDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/party-search/:questId"
+              element={
+                <ProtectedRoute>
+                  <PartySearch />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/accepted-jobs"
+              element={
+                <ProtectedRoute>
+                  <AcceptedJobs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/party-requests"
+              element={
+                <ProtectedRoute>
+                  <PartyRequests />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <ProtectedRoute>
+                  <Messages />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company-dashboard"
+              element={
+                <ProtectedRoute>
+                  <CompanyDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/create-quest"
+              element={
+                <ProtectedRoute>
+                  <CreateQuest />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
