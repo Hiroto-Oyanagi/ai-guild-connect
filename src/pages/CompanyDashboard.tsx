@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ArrowLeft, FileText, MessageSquare, Settings, Plus, Search } from "lucide-react"
+import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus, Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { QuestCarousel } from "@/components/quest/QuestCarousel"
@@ -42,6 +42,11 @@ export default function CompanyDashboard() {
 
   const stats = [
     {
+      title: "登録済みAIプログラマー",
+      value: "150+",
+      icon: <Users className="h-6 w-6" />
+    },
+    {
       title: "進行中のプロジェクト",
       value: String(ongoingQuests.length),
       icon: <FileText className="h-6 w-6" />
@@ -76,7 +81,7 @@ export default function CompanyDashboard() {
 
       <ScrollArea className="flex-grow">
         <main className="container mx-auto px-4 py-8">
-          <div className="grid gap-6 md:grid-cols-2 mb-8">
+          <div className="grid gap-6 md:grid-cols-3 mb-8">
             {stats.map((stat, index) => (
               <Card key={index} className="bg-[#2A0374] bg-opacity-50 border-[#4A0E82]">
                 <CardContent className="p-6">
