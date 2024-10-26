@@ -1,71 +1,50 @@
-# Welcome to your GPT Engineer project
+# 🎮 AIギルド - 企業とAIプログラマーをつなぐ冒険アプリ
 
-## Project info
+## 📖 概要
 
-**URL**: https://run.gptengineer.app/projects/5e333ae6-a9c4-45a1-95d0-f43ba1e384e7/improve
+**AIギルド**は、企業が仕事を「クエスト」に見立てて投稿し、AIプログラマーが企業から作成されたクエストを各自のペースで攻略するAIプログラマーとエンジニアをつなぐプラットフォームです。  
+従来のプラットフォームは企業がタスクを作成→エンジニアが応募→複数の面接・面談を挟めてプロダクトを開発するという流れでした。
+AIギルドは、タスクを作成した段階でAIエンジニア側が自由にアクセスできるよう設計しているプラットフォームで、各々が各自タスクに取り組むことができます。
+**依頼から開発までを爆速に**をテーマにした新しいプラットフォームになっています。
 
-## How can I edit this code?
 
-There are several ways of editing your application.
+## 🔥 主な機能
 
-**Use GPT Engineer**
+### 🎮 AIプログラマー向け
 
-Simply visit the GPT Engineer project at [GPT Engineer](https://gptengineer.app/projects/5e333ae6-a9c4-45a1-95d0-f43ba1e384e7/improve) and start prompting.
+- **クエスト閲覧＆挑戦**: 企業が投稿したクエストを自由に閲覧し、興味のあるものに挑戦可能。各自のペースで取り組み、成果を得られます。  
+- **チームプレイ**: 仲間とチームを組んで、まるでダンジョンのようなプロジェクトに一緒に挑戦！協力して難関を突破し、達成感を共有できます。  
+- **スキルアップ**: 実際の業務に近いタスクに取り組むことで、実務経験を積みながらスキルを磨けます。
 
-Changes made via gptengineer.app will be committed automatically to this repo.
+### 🏢 企業向け
 
-**Use your preferred IDE**
+- **クエスト投稿**: 自社のニーズに合わせたタスクやプロジェクトをクエストとして投稿可能。プログラマーたちの挑戦を待つだけ！  
+- **進捗管理**: プログラマーたちの取り組み状況や進捗をリアルタイムで確認できます。 （未実装）
+- **成果物確認**: 完了したタスクの成果物を受け取り、フィードバックを提供できます。（未実装）
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in the GPT Engineer UI.
+## 🎯 プロジェクトの目的
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **企業の課題解決を加速**: AIプログラマーの力で、企業は迅速に課題をクリア！  
+- **AIプログラマーの成長支援**: リアルなクエストに挑戦し、実務経験とスキルを獲得。  
+- **ゲーミフィケーションで学習促進**: ゲーム感覚で学び、仲間と共に成長する楽しい環境を提供。
 
-Follow these steps:
+## 🎮 使い方ガイド
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 🎓 AIプログラマー向け
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. **クエスト検索**: 企業が投稿したクエストを自由に閲覧し、興味のあるものを選択。  
+2. **挑戦開始**: ソロでクエストに挑戦するか、仲間とチームを組んでタスクに挑むか選択する。
+3. **開発開始**: 企業の提示した要件に合わせて開発を開始。
 
-# Step 3: Install the necessary dependencies.
-npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### 🏭 企業向け
+ 
+1. **クエスト投稿**: やってほしい仕事をクエストとして投稿。  
+2. **進捗確認**: プログラマーたちの取り組み状況をリアルタイムでチェック。  
+3. **成果物受領＆フィードバック**: 完了したタスクの成果物を受け取り、メッセージ機能でフィードバックを提供。
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
 
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-All GPT Engineer projects can be deployed directly via the GPT Engineer app.
-
-Simply visit your project at [GPT Engineer](https://gptengineer.app/projects/5e333ae6-a9c4-45a1-95d0-f43ba1e384e7/improve) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.gptengineer.app/tips-tricks/custom-domain/)
