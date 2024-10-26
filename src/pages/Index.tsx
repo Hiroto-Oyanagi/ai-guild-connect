@@ -24,7 +24,7 @@ const Index = () => {
               </p>
               <Button 
                 className="w-full"
-                onClick={() => navigate("/login?type=programmer")}
+                onClick={() => navigate("/auth")}
               >
                 プログラマーとして参加
               </Button>
@@ -41,7 +41,7 @@ const Index = () => {
               </p>
               <Button 
                 className="w-full"
-                onClick={() => navigate("/login?type=company")}
+                onClick={() => navigate("/auth")}
               >
                 企業として参加
               </Button>
