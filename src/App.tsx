@@ -5,8 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { AuthProvider } from "./components/auth/AuthProvider"
 import { ProtectedRoute } from "./components/auth/ProtectedRoute"
 import Index from "./pages/Index"
-import ProgrammerAuth from "./components/auth/ProgrammerAuth"
-import CompanyAuth from "./components/auth/CompanyAuth"
+import AuthPage from "./pages/Auth"
 import Home from "./pages/Home"
 import QuestDetails from "./pages/QuestDetails"
 import PartySearch from "./pages/PartySearch"
@@ -26,8 +25,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/programmer-auth" element={<ProgrammerAuth />} />
-            <Route path="/company-auth" element={<CompanyAuth />} />
+            <Route path="/auth" element={<AuthPage />} />
             <Route
               path="/home"
               element={
