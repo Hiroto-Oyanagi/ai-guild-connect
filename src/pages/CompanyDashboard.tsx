@@ -2,12 +2,11 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Plus, Search } from "lucide-react"
+import { ArrowLeft, Users, FileText, MessageSquare, Settings, Plus, Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { QuestCarousel } from "@/components/quest/QuestCarousel"
 import { supabase } from "@/integrations/supabase/client"
-import { Header } from "@/components/layout/Header"
 
 interface Quest {
   id: number;
@@ -61,7 +60,25 @@ export default function CompanyDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
-      <Header />
+      <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold font-serif">AIギルド 企業ダッシュボード</h1>
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="outline" 
+              className="border-[#4A0E82] text-[#a29dff] hover:bg-[#4A0E82] hover:text-white"
+              onClick={() => navigate('/create-quest')}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              新規クエスト作成
+            </Button>
+            <Button variant="ghost" size="icon">
+              <Settings className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+      </header>
+
       <ScrollArea className="flex-grow">
         <main className="container mx-auto px-4 py-8">
           <div className="grid gap-6 md:grid-cols-3 mb-8">
