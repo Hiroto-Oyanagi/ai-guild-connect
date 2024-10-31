@@ -45,7 +45,7 @@ const App = () => (
             <Route
               path="/party-search/:questId"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['programmer']}>
                   <PartySearch />
                 </ProtectedRoute>
               }
@@ -53,7 +53,7 @@ const App = () => (
             <Route
               path="/accepted-jobs"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['programmer']}>
                   <AcceptedJobs />
                 </ProtectedRoute>
               }
@@ -61,7 +61,7 @@ const App = () => (
             <Route
               path="/party-requests"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['programmer']}>
                   <PartyRequests />
                 </ProtectedRoute>
               }
@@ -77,7 +77,7 @@ const App = () => (
             <Route
               path="/company-dashboard"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['company']}>
                   <CompanyDashboard />
                 </ProtectedRoute>
               }
@@ -85,7 +85,7 @@ const App = () => (
             <Route
               path="/create-quest"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['company']}>
                   <CreateQuest />
                 </ProtectedRoute>
               }
