@@ -21,17 +21,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     async function getProfile(userId: string) {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', userId)
-        .single()
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', userId)
+          .maybeSingle()
 
-      if (error) {
-        console.error('Error fetching user role:', error)
+        if (error) {
+          console.error('Error fetching user role:', error)
+          return null
+        }
+
+        return data?.role || null
+      } catch (error) {
+        console.error('Error in getProfile:', error)
         return null
       }
-      return data?.role
     }
 
     supabase.auth.getSession().then(async ({ data: { session } }) => {
