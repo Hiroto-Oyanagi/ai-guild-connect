@@ -26,8 +26,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // プロフィールテーブルからユーザーロールを取得する関数
+    // 【潜在的な問題箇所1】
+    // Supabaseのクエリ結果を一度変数に格納し、
+    // エラーハンドリングを改善する必要があるかもしれません
     async function getProfile(userId: string) {
       try {
+        // 【改善案】
+        // const response = await supabase
+        //   .from('profiles')
+        //   .select('role')
+        //   .eq('id', userId)
+        //   .maybeSingle()
+        // 
+        // if (response.error) throw response.error
+        // return response.data?.role || null
         const { data, error } = await supabase
           .from('profiles')
           .select('role')
@@ -46,7 +58,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // 初回レンダリング時にセッション情報を取得
+    // 【潜在的な問題箇所2】
+    // 初回レンダリング時のセッション取得とリスナーの設定で
+    // 同じレスポンスを複数回処理している可能性があります
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
@@ -57,7 +71,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false)
     })
 
+    // 【潜在的な問題箇所3】
     // 認証状態の変更を監視するリスナーを設定
+    // onAuthStateChangeのコールバック内でも同様の処理を行っているため
+    // レスポンスの二重処理が発生する可能性があります
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
