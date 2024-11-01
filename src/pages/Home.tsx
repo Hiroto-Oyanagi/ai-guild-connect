@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Settings, Scroll, User, Trophy, Zap, Brain, Edit, X, Users, BarChart, Menu, MessageSquare, Briefcase } from "lucide-react"
+import { Settings, Scroll, User, Trophy, Zap, Brain, Edit, X, Users, BarChart, Menu, MessageSquare, Briefcase, ArrowLeft } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -52,60 +52,68 @@ export default function Home() {
     })
   }
 
-  const handleMenuItemClick = (path: string) => {
-    navigate(path)
-  }
-
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
       <NodeAnimation />
-      <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md flex justify-between items-center">
-        <h1 className="text-2xl font-bold font-serif">AIギルド</h1>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">メニュー</span>
+      <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md">
+        <div className="container mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              className="text-white hover:text-[#a29dff]"
+              onClick={() => navigate('/')}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              トップページへ
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-[#2A0374] border-[#4A0E82] text-white">
-            <DropdownMenuItem 
-              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
-              onClick={() => handleMenuItemClick('/home')}
-            >
-              <Scroll className="mr-2 h-4 w-4" />
-              <span>クエスト</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
-              onClick={() => setActiveTab('profile')}
-            >
-              <User className="mr-2 h-4 w-4" />
-              <span>プロフィール</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
-              onClick={() => handleMenuItemClick('/accepted-jobs')}
-            >
-              <Briefcase className="mr-2 h-4 w-4" />
-              <span>引き受けた仕事</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
-              onClick={() => handleMenuItemClick('/party-requests')}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              <span>パーティーの依頼</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
-              onClick={() => handleMenuItemClick('/messages')}
-            >
-              <MessageSquare className="mr-2 h-4 w-4" />
-              <span>メッセージ</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <h1 className="text-2xl font-bold font-serif">AIギルド</h1>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">メニュー</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 bg-[#2A0374] border-[#4A0E82] text-white">
+              <DropdownMenuItem 
+                className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+                onClick={() => handleMenuItemClick('/home')}
+              >
+                <Scroll className="mr-2 h-4 w-4" />
+                <span>クエスト</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+                onClick={() => setActiveTab('profile')}
+              >
+                <User className="mr-2 h-4 w-4" />
+                <span>プロフィール</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+                onClick={() => handleMenuItemClick('/accepted-jobs')}
+              >
+                <Briefcase className="mr-2 h-4 w-4" />
+                <span>引き受けた仕事</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+                onClick={() => handleMenuItemClick('/party-requests')}
+              >
+                <Users className="mr-2 h-4 w-4" />
+                <span>パーティーの依頼</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex items-center cursor-pointer hover:bg-[#4A0E82]"
+                onClick={() => handleMenuItemClick('/messages')}
+              >
+                <MessageSquare className="mr-2 h-4 w-4" />
+                <span>メッセージ</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </header>
 
       <ScrollArea className="flex-grow">
