@@ -62,7 +62,17 @@ export default function CompanyDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
       <header className="sticky top-0 z-10 bg-[#120166] bg-opacity-80 p-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold font-serif">AIギルド 企業ダッシュボード</h1>
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              className="text-white hover:text-[#a29dff]"
+              onClick={() => navigate('/')}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              トップページへ
+            </Button>
+            <h1 className="text-2xl font-bold font-serif">AIギルド 企業ダッシュボード</h1>
+          </div>
           <div className="flex items-center gap-4">
             <Button 
               variant="outline" 
