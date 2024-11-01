@@ -52,6 +52,10 @@ export default function Home() {
     })
   }
 
+  const handleMenuItemClick = (path: string) => {
+    navigate(path)
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#120166] via-[#2A0374] to-[#4A0E82] text-white">
       <NodeAnimation />
